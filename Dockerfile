@@ -1,25 +1,15 @@
-FROM python:3.12-slim
+# Dockerfile (корень репо)
+FROM python:3.11-slim
 
-# Set working directory
+# 1. рабочая папка
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements file
+# 2. зависимости
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# 3. код проекта
 COPY . .
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-
-# Command will be specified in docker-compose.yml for each service
-CMD ["python", "main.py"]
+# 4. стартовый модуль
+CMD ["python", "-m", "realtime.ws_listener"]
